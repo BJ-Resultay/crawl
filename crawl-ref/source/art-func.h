@@ -282,15 +282,10 @@ static int _calc_olgreb_damage(actor* attacker, actor* defender)
 }
 
 
-static void _OLGREB_melee_effects(item_def* weapon, actor* attacker,
+static void _OLGREB_melee_effects(item_def* /*weapon*/, actor* attacker,
                                   actor* defender, bool mondied,
                                   int /*dam*/)
 {
-    if (is_unrandom_artefact(*weapon)
-        && get_unrand_entry(weapon->unrand_idx)->type_name)
-    {
-        count_action(CACT_MELEE, weapon->unrand_idx);
-    }
     const int bonus_dam = _calc_olgreb_damage(attacker, defender);
 
     if (!mondied && bonus_dam)
@@ -447,6 +442,17 @@ static void _PRUNE_unequip(item_def */*item*/, bool *show_msgs)
         _equip_mpr(show_msgs, "The curse of the Prune lifts from you.");
 }
 
+static void _PRUNE_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                 actor* /*defender*/, bool /*mondied*/,
+                                 int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
 ////////////////////////////////////////////////////
 
 static void _LIGHTNING_SCALES_equip(item_def */*item*/, bool *show_msgs, bool /*unmeld*/)
@@ -492,6 +498,17 @@ static void _TROG_unequip(item_def */*item*/, bool *show_msgs)
     _equip_mpr(show_msgs, "You feel less violent.");
 }
 
+static void _TROG_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                actor* /*defender*/, bool /*mondied*/,
+                                int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
 ///////////////////////////////////////////////////
 
 // XXX: Always getting maximal vampiric drain is hardcoded in
@@ -507,6 +524,17 @@ static void _VAMPIRES_TOOTH_equip(item_def */*item*/, bool *show_msgs, bool /*un
                    "You feel a strange hunger, and smell blood in the air...");
     }
     // else let player-equip.cc handle message
+}
+
+static void _VAMPIRES_TOOTH_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                          actor* /*defender*/, bool /*mondied*/,
+                                          int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
 }
 
 ///////////////////////////////////////////////////
@@ -758,6 +786,17 @@ static void _EOS_equip(item_def */*item*/, bool */*show_msgs*/, bool /*unmeld*/)
 static void _EOS_unequip(item_def */*item*/, bool */*show_msgs*/)
 {
     invalidate_agrid(true);
+}
+
+static void _EOS_melee_effects(item_def* weapon, actor* /*attacker*/,
+                               actor* /*defender*/, bool /*mondied*/,
+                               int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
 }
 
 ///////////////////////////////////////////////////
@@ -1235,6 +1274,17 @@ static void _MAJIN_unequip(item_def */*item*/, bool *show_msgs)
     }
 }
 
+static void _MAJIN_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                 actor* /*defender*/, bool /*mondied*/,
+                                 int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
 ///////////////////////////////////////////////////
 
 static int _octorings_worn()
@@ -1269,6 +1319,17 @@ static void _OCTOPUS_KING_equip(item_def *item, bool *show_msgs,
 static void _OCTOPUS_KING_world_reacts(item_def *item)
 {
     item->plus = 8 + 2 * _octorings_worn();
+}
+
+static void _OCTOPUS_KING_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                        actor* /*defender*/, bool /*mondied*/,
+                                        int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
 }
 
 ///////////////////////////////////////////////////
@@ -1525,14 +1586,9 @@ static void _BATTLE_world_reacts(item_def */*item*/)
     }
 }
 
-static void _BATTLE_melee_effects(item_def* weapon, actor* attacker,
+static void _BATTLE_melee_effects(item_def* /*weapon*/, actor* attacker,
                                   actor* /*defender*/, bool /*mondied*/, int /*dam*/)
 {
-    if (is_unrandom_artefact(*weapon)
-        && get_unrand_entry(weapon->unrand_idx)->type_name)
-    {
-        count_action(CACT_MELEE, weapon->unrand_idx);
-    }
     if (attacker)
     {
         aim_battlesphere(attacker, SPELL_MAGIC_DART);
@@ -1676,6 +1732,17 @@ static void _GUARD_unequip(item_def * /* item */, bool * show_msgs)
     {
         _equip_mpr(show_msgs, "Your spectral weapon disappears.");
         end_spectral_weapon(spectral_weapon, false, true);
+    }
+}
+
+static void _GUARD_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                 actor* /*defender*/, bool /*mondied*/,
+                                 int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
     }
 }
 
@@ -1829,25 +1896,219 @@ static void _VITALITY_world_reacts(item_def */*item*/)
 }
 
 ///////////////////////////////////////////////////
+
+#if TAG_MAJOR_VERSION = 34
+static void _BLOODBANE_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                     actor* /*defender*/, bool /*mondied*/,
+                                     int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+#endif
+
+#if TAG_MAJOR_VERSION = 34
+static void _BRILLIANCE_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                      actor* /*defender*/, bool /*mondied*/,
+                                      int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+#endif
+
+static void _MORG_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                actor* /*defender*/, bool /*mondied*/,
+                                int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
+static void _SKULLCRUSHER_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                        actor* /*defender*/, bool /*mondied*/,
+                                        int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
+static void _ZEALOT_SWORD_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                        actor* /*defender*/, bool /*mondied*/,
+                                        int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
+#if TAG_MAJOR_VERSION = 34
+static void _DOOM_KNIGHT_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                       actor* /*defender*/, bool /*mondied*/,
+                                       int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+#endif
+
+if TAG_MAJOR_VERSION = 34
+static void _BOTONO_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                  actor* /*defender*/, bool /*mondied*/,
+                                  int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+#endif
+
+static void _ARGA_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                actor* /*defender*/, bool /*mondied*/,
+                                int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
+static void _SPRIGGANS_KNIFE_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                           actor* /*defender*/, bool /*mondied*/,
+                                           int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
+#if TAG_MAJOR_VERSION = 34
+static void _CRYSTAL_SPEAR_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                         actor* /*defender*/, bool /*mondied*/,
+                                         int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+#endif
+
+static void _DARK_MAUL_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                     actor* /*defender*/, bool /*mondied*/,
+                                     int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
+static void _GYRE_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                actor* /*defender*/, bool /*mondied*/,
+                                int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
+static void _RIFT_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                actor* /*defender*/, bool /*mondied*/,
+                                int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
+static void _LOCHABER_AXE_melee_effects(item_def* weapon, actor* /*attacker*/,
+                                        actor* /*defender*/, bool /*mondied*/,
+                                        int /*dam*/)
+{
+    if (is_unrandom_artefact(*weapon)
+        && get_unrand_entry(weapon->unrand_idx)->type_name)
+    {
+        count_action(CACT_MELEE, weapon->unrand_idx);
+    }
+}
+
 /**
- * OBJ_WEAPONS
- * Singing Sword, Wrath of Trog, glaive of Prune, staff of Olgreb,
- * staff of Wucad Mu, Vampire's Tooth, scythe of Curses,
- * sceptre of Torment, sword of Zonguldrok, sword of Cerebov,
- * staff of Dispater, sceptre of Asmodeus, demon blade "Bloodbane",
- * scimitar of Flaming Death, eveningstar "Brilliance",
- * demon blade "Leech", dagger of Chilly Death, dagger "Morg",
- * scythe "Finisher", greatsling "Punk", longbow "Zephyr",
- * giant club "Skullcrusher", glaive of the Guard, ZEALOT_SWORD,
- * arbalest "Damnation", sword of the Doom Knight, morningstar "Eos",
- * spear of the Botono, trident of the Octopus King,
- * mithril axe "Arga", Elemental Staff, heavy crossbow "Sniper",
- * longbow "Piercer", BLOWGUN_ASSASSIN, lance "Wyrmbane",
- * Spriggan's Knife, plutonium sword, great mace "Undeadhunter",
- * whip "Snakebite", knife of Accuracy, CRYSTAL_SPEAR,
- * CAPTAIN, storm bow, DEMON_AXE, autumn katana, shillelagh "Devastator",
- * WOE, dark maul, arc blade, SPELLBINDER, lajatang of Order,
- * FIRESTARTER, MAJIN, GYRE, FROSTBITE, THERMIC_ENGINE,
- * RIFT, BATTLE, woodcutter's axe, Throatcutter, staff of the Meek,
- * CONDEMNATION, Lochaber axe
+ * OBJ_WEAPONS/CACT_MELEE, finished *
+ * Singing Sword *
+ * Wrath of Trog *
+ * glaive of Prune *
+ * Vampire's Tooth *
+ * scythe of Curses *
+ * sceptre of Torment *
+ * sword of Zonguldrok *
+ * sword of Cerebov *
+ * demon blade "Bloodbane" *
+ * scimitar of Flaming Death *
+ * eveningstar "Brilliance" *
+ * demon blade "Leech" *
+ * dagger of Chilly Death *
+ * dagger "Morg" *
+ * scythe "Finisher" *
+ * giant club "Skullcrusher" *
+ * glaive of the Guard *
+ * ZEALOT_SWORD *
+ * sword of the Doom Knight *
+ * morningstar "Eos" *
+ * spear of the Botono *
+ * trident of the Octopus King *
+ * mithril axe "Arga" *
+ * lance "Wyrmbane" *
+ * Spriggan's Knife *
+ * plutonium sword *
+ * great mace "Undeadhunter" *
+ * whip "Snakebite" *
+ * CRYSTAL_SPEAR *
+ * DEMON_AXE *
+ * autumn katana *
+ * shillelagh "Devastator" *
+ * WOE *
+ * dark maul *
+ * SPELLBINDER *
+ * lajatang of Order *
+ * FIRESTARTER *
+ * MAJIN *
+ * GYRE *
+ * FROSTBITE *
+ * THERMIC_ENGINE *
+ * RIFT *
+ * Throatcutter *
+ * CONDEMNATION *
+ * Lochaber axe *
 **/
+
+// captain and arc blade are rapiers
+// knife of Accuracy and woodcutter's axe have non matching enums
